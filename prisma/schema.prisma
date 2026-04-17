@@ -1,0 +1,110 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  ADMIN
+  VENDOR
+  CUSTOMER
+}
+
+enum CertStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id         String   @id @default(uuid())
+  name       String
+  email      String   @unique
+  password   String
+  role       UserRole @default(CUSTOMER)
+  status     String   @default("active")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  vendor_profile  VendorProfile?
+  orders          Order[]
+  community_posts CommunityPost[]
+
+  @@map("users")
+}
+
+model VendorProfile {
+  id                   String                @id @default(uuid())
+  user_id              String                @unique
+  user                 User                  @relation(fields: [user_id], references: [id])
+  farm_name            String
+  certification_status CertStatus            @default(PENDING)
+  farm_location        String
+  products             Produce[]
+  rental_spaces        RentalSpace[]
+  sustainability_certs SustainabilityCert[]
+
+  @@map("vendor_profiles")
+}
+
+model Produce {
+  id                   String        @id @default(uuid())
+  vendor_id            String
+  vendor               VendorProfile @relation(fields: [vendor_id], references: [id])
+  name                 String
+  description          String
+  price                Float
+  category             String
+  certification_status CertStatus    @default(PENDING)
+  available_quantity   Int
+  orders               Order[]
+
+  @@map("produces")
+}
+
+model RentalSpace {
+  id           String        @id @default(uuid())
+  vendor_id    String
+  vendor       VendorProfile @relation(fields: [vendor_id], references: [id])
+  location     String
+  size         String
+  price        Float
+  availability Boolean       @default(true)
+
+  @@map("rental_spaces")
+}
+
+model Order {
+  id         String   @id @default(uuid())
+  user_id    String
+  user       User     @relation(fields: [user_id], references: [id])
+  produce_id String
+  produce    Produce  @relation(fields: [produce_id], references: [id])
+  status     String   @default("pending")
+  order_date DateTime @default(now())
+
+  @@map("orders")
+}
+
+model CommunityPost {
+  id           String   @id @default(uuid())
+  user_id      String
+  user         User     @relation(fields: [user_id], references: [id])
+  post_content String
+  post_date    DateTime @default(now())
+
+  @@map("community_posts")
+}
+
+model SustainabilityCert {
+  id                 String        @id @default(uuid())
+  vendor_id          String
+  vendor             VendorProfile @relation(fields: [vendor_id], references: [id])
+  certifying_agency  String
+  certification_date DateTime
+  file_url           String?
+
+  @@map("sustainability_certs")
+}
