@@ -5,7 +5,7 @@ import prisma from '../src/config/prisma';
 async function main() {
   console.log("🌱 Seeding started...");
 
-  const hashedPassword = await bcrypt.hash('password123', 12);
+  const hashedPassword = await bcrypt.hash('admin123', 12);
 
   // Admin User
   await prisma.user.upsert({

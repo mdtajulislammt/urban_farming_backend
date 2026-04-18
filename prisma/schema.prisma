@@ -30,9 +30,10 @@ model User {
 
   vendor_profile  VendorProfile?
   orders          Order[]
-  community_posts CommunityPost[]
   rental_spaces   rental_space[]
   bookings        booking[]
+  communityPosts  community_post[]
+  comments        comment[]
 
   @@map("users")
 }
@@ -84,15 +85,6 @@ model Order {
   @@map("orders")
 }
 
-model CommunityPost {
-  id           String   @id @default(uuid())
-  user_id      String
-  user         User     @relation(fields: [user_id], references: [id])
-  post_content String
-  post_date    DateTime @default(now())
-
-  @@map("community_posts")
-}
 
 model SustainabilityCert {
   id                 String        @id @default(uuid())
@@ -154,4 +146,30 @@ model plant_tracking {
   image_url       String?
 
   @@map("plant_trackings")
+}
+
+model community_post {
+  id           String   @id @default(uuid())
+  user_id      String
+  user         User     @relation(fields: [user_id], references: [id])
+  post_content String   @db.Text
+  post_date    DateTime @default(now())
+
+  title     String?
+  image_url String?
+  comments  comment[]
+
+  @@map("community_posts")
+}
+
+model comment {
+  id           String         @id @default(uuid())
+  post_id      String
+  post         community_post @relation(fields: [post_id], references: [id])
+  user_id      String
+  user         User           @relation(fields: [user_id], references: [id])
+  comment_text String
+  created_at   DateTime       @default(now())
+
+  @@map("comments")
 }

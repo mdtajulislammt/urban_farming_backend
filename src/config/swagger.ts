@@ -24,12 +24,14 @@ const options: swaggerJsdoc.Options = {
       },
     },
     tags: [
+      { name: "Admin", description: "Administrative management and platform statistics" },
       { name: "Auth", description: "Authentication API" },
       { name: "Marketplace", description: "Organic produce marketplace" },
       { name: "Vendor", description: "Vendor and Farm profile management" },
       { name: "Order", description: "Order management and purchase history" },
       { name: "Rental", description: "Farming equipment rental system" },
       { name: "Tracking", description: "Plant health tracking system" },
+      { name: "Community", description: "Community forum and discussions" },
     ],
     security: [
       {
