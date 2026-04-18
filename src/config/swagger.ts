@@ -29,6 +29,7 @@ const options: swaggerJsdoc.Options = {
       { name: "Vendor", description: "Vendor and Farm profile management" },
       { name: "Order", description: "Order management and purchase history" },
       { name: "Rental", description: "Farming equipment rental system" },
+      { name: "Tracking", description: "Plant health tracking system" },
     ],
     security: [
       {

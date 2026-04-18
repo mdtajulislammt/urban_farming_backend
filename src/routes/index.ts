@@ -3,6 +3,7 @@ import { AuthRoutes } from "../modules/auth/auth.routes";
 import { MarketplaceRoutes } from "../modules/marketplace/marketplace.routes";
 import { OrderRoutes } from "../modules/order/order.routes";
 import { RentalRoutes } from "../modules/rental/rental.routes";
+import { TrackingRoutes } from "../modules/tracking/tracking.routes";
 import { VendorRoutes } from "../modules/vendor/vendor.routes";
 
 const router = express.Router();
@@ -13,6 +14,7 @@ const moduleRoutes = [
   { path: "/vendor", route: VendorRoutes },
   { path: "/rental", route: RentalRoutes },
   { path: "/order", route: OrderRoutes },
+  { path: "/tracking", route: TrackingRoutes },
   //   { path: "/admin", route: AdminRoutes },
 ];
 
