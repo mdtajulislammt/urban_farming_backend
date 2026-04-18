@@ -1,23 +1,44 @@
-import { NextFunction, Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
-import { IJwtPayload } from '../modules/auth/auth.interface';
+import { NextFunction, Request, Response } from "express";
+import jwt from "jsonwebtoken";
+import { IJwtPayload } from "../modules/auth/auth.interface";
 
-const auth = (...roles: string[]) => async (req: Request, res: Response, next: NextFunction) => {
+const auth =
+  (...roles: string[]) =>
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const token = req.headers.authorization;
-        if (!token) throw new Error("Unauthorized");
+      const authHeader = req.headers.authorization;
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET!) as IJwtPayload;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({
+          success: false,
+          message:
+            "Unauthorized! Please provide a token in 'Bearer <token>' format.",
+        });
+      }
 
-        if (roles.length && !roles.includes(decoded.role)) {
-            throw new Error("Forbidden: You do not have permission");
-        }
+      const token = authHeader.split(" ")[1];
 
-        req.user = decoded; // Need to extend Express Request type
-        next();
-    } catch (error) {
-        res.status(401).json({ success: false, message: (error as Error).message });
+      const decoded = jwt.verify(
+        token,
+        process.env.JWT_SECRET as string,
+      ) as IJwtPayload;
+
+      if (roles.length && !roles.includes(decoded.role)) {
+        return res.status(403).json({
+          success: false,
+          message: "Forbidden: You do not have permission to access this route",
+        });
+      }
+
+      req.user = decoded;
+      next();
+    } catch (error: any) {
+      res.status(401).json({
+        success: false,
+        message:
+          error.message === "jwt expired" ? "Token expired" : "invalid token",
+      });
     }
-};
+  };
 
-export default auth;    
+export default auth;

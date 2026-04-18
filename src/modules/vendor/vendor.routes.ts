@@ -6,18 +6,22 @@ const router = express.Router();
 
 /**
  * @openapi
- * /api/v1/vendor/setup-profile:
- * post:
- * tags: [Vendor]
- * summary: Create/Update Farm Profile
- * security:
- * - bearerAuth: []
- * requestBody:
- * required: true
- * content:
- * application/json:
- * schema:
- * $ref: '#/components/schemas/VendorProfileInput'
+ * /vendor/setup-profile:
+ *   post:
+ *     tags:
+ *       - Vendor
+ *     summary: Create/Update Farm Profile
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/VendorProfileInput'
+ *     responses:
+ *       200:
+ *         description: Vendor profile synced successfully
  */
 router.post(
   "/setup-profile",
@@ -27,18 +31,22 @@ router.post(
 
 /**
  * @openapi
- * /api/v1/vendor/submit-cert:
- * post:
- * tags: [Vendor]
- * summary: Submit Sustainability Certificate
- * security:
- * - bearerAuth: []
- * requestBody:
- * required: true
- * content:
- * application/json:
- * schema:
- * $ref: '#/components/schemas/SustainabilityCertInput'
+ * /vendor/submit-cert:
+ *   post:
+ *     tags:
+ *       - Vendor
+ *     summary: Submit Sustainability Certificate
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/SustainabilityCertInput'
+ *     responses:
+ *       201:
+ *         description: Sustainability certificate submitted for review
  */
 router.post("/submit-cert", auth("VENDOR"), VendorController.submitCertificate);
 

@@ -15,7 +15,15 @@ app.use(express.urlencoded({ extended: true }));
 
 // --- Swagger UI Implementation ---
 // Access this at http://localhost:5000/api/docs
-app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use(
+  "/api/docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+  })
+);
 
 // --- Application Routes ---
 // All routes will be prefixed with /api/v1

@@ -1,6 +1,8 @@
 import express from "express";
 import { AuthRoutes } from "../modules/auth/auth.routes";
 import { MarketplaceRoutes } from "../modules/marketplace/marketplace.routes";
+import { OrderRoutes } from "../modules/order/order.routes";
+import { RentalRoutes } from "../modules/rental/rental.routes";
 import { VendorRoutes } from "../modules/vendor/vendor.routes";
 
 const router = express.Router();
@@ -9,6 +11,8 @@ const moduleRoutes = [
   { path: "/auth", route: AuthRoutes },
   { path: "/marketplace", route: MarketplaceRoutes },
   { path: "/vendor", route: VendorRoutes },
+  { path: "/rental", route: RentalRoutes },
+  { path: "/order", route: OrderRoutes },
   //   { path: "/admin", route: AdminRoutes },
 ];
 
